@@ -1,0 +1,65 @@
+{
+    "model_name": "GradientBoosting",
+    "model_type": "Boosting",
+    "best_params": "{'learning_rate': 0.05, 'max_depth': 5, 'n_estimators': 200, 'subsample': 0.8}",
+    "metrics_validation": {
+        "rmse": 2.5683378649346205,
+        "mae": 0.9040031920109356,
+        "r2": 0.9680480868401601
+    },
+    "metrics_test": {
+        "rmse": 2.712087432619792,
+        "mae": 1.1057524783146033,
+        "r2": 0.974754307805557
+    },
+    "baseline_metrics": {
+        "rmse": 2.718496133285426,
+        "mae": 1.1228025379394533
+    },
+    "improvement_over_baseline": {
+        "rmse_improvement_pct": 5.523578515056863,
+        "mae_improvement_pct": 19.4868944926019
+    },
+    "random_seed": 42,
+    "dataset_info": {
+        "train_records": 100000,
+        "val_records": 100000,
+        "test_records": 100000,
+        "total_records": 300000,
+        "num_features_after_preprocessing": 86
+    },
+    "features": {
+        "numeric": [
+            "passenger_count",
+            "trip_distance",
+            "fare_amount",
+            "extra",
+            "mta_tax",
+            "improvement_surcharge",
+            "pickup_hour",
+            "day_of_week",
+            "month",
+            "is_weekend",
+            "is_rush_hour",
+            "base_fare_components",
+            "congestion_surcharge",
+            "airport_fee"
+        ],
+        "categorical": [
+            "service_type",
+            "vendor_id",
+            "rate_code_id",
+            "payment_type",
+            "pu_borough",
+            "pu_zone_grouped"
+        ]
+    },
+    "training_time_seconds": 345.067705,
+    "timestamp": "20251121_102022",
+    "data_source": "ANALYTICS.OBT_TRIPS_ML",
+    "years_used": [
+        2020,
+        2021,
+        2022
+    ]
+}

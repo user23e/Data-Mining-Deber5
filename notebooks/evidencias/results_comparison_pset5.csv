@@ -1,0 +1,11 @@
+Modelo,Tipo,RMSE_Val,MAE_Val,R2_Val,Tiempo_Train,Best_Params
+GradientBoosting,Boosting,2.5683378649346205,0.9040031920109356,0.9680480868401601,345.067705,"{'learning_rate': 0.05, 'max_depth': 5, 'n_estimators': 200, 'subsample': 0.8}"
+VotingRegressor,Ensemble-Voting,2.581056117577182,0.9646253851819243,0.9677308554700327,17.636931,
+Pasting,Ensemble-Pasting,2.5859346074746346,0.9445858830124689,0.9676087554739776,31.681893,
+Bagging,Ensemble-Bagging,2.5877342623408066,0.9433468790930065,0.9675636550720609,26.717474,
+CatBoost,Boosting,2.5980984766317996,0.9806077963165462,0.9673033111476893,24.099514,"{'learning_rate': 0.1, 'l2_leaf_reg': 1, 'iterations': 100, 'depth': 4, 'bagging_temperature': 0.5}"
+Baseline-LinearRegression,Baseline,2.718496133285426,1.1228025379394533,0.9642027225987193,0.0,
+LightGBM,Boosting,2.8086119495339212,0.9315126338744573,0.9617900880861926,59.046815,"{'reg_lambda': 0, 'reg_alpha': 0.1, 'num_leaves': 31, 'n_estimators': 100, 'max_depth': 7, 'learning_rate': 0.05, 'feature_fraction': 0.9, 'bagging_freq': 5, 'bagging_fraction': 0.8}"
+XGBoost,Boosting,3.3890284747004054,0.9515357934947102,0.9443656531751787,12.764911,"{'subsample': 0.8, 'reg_lambda': 1, 'reg_alpha': 0.1, 'n_estimators': 200, 'min_child_weight': 1, 'max_depth': 7, 'learning_rate': 0.05, 'colsample_bytree': 1.0}"
+AdaBoost,Boosting,3.9139613288465758,2.1918629664282627,0.9257962901255783,226.354443,"{'learning_rate': 0.05, 'n_estimators': 50}"
+Baseline-Mean,Baseline,14.440149507384461,8.248849732640002,-0.010033870097352127,0.0,

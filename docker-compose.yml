@@ -1,0 +1,111 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:13
+    container_name: ny_taxi_postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - "./postgres_data:/var/lib/postgresql/data:rw"
+      - "./init_db.sql:/docker-entrypoint-initdb.d/init.sql:ro"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    volumes:
+      - "./pgadmin_data:/var/lib/pgadmin"
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  pyspark-notebook:
+    image: jupyter/pyspark-notebook:python-3.11
+    container_name: pyspark-notebook
+    ports:
+      - "8888:8888"   # Jupyter
+      - "4040:4040"   # Spark UI
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    environment:
+      SPARK_LOCAL_IP: 0.0.0.0
+      PYSPARK_PYTHON: python
+      PYSPARK_DRIVER_PYTHON: python
+      
+      # Memoria Spark
+      SPARK_DRIVER_MEMORY: ${SPARK_DRIVER_MEMORY}
+      SPARK_EXECUTOR_MEMORY: ${SPARK_EXECUTOR_MEMORY}
+      SPARK_DRIVER_EXTRA_JAVA_OPTIONS: "-XX:+UseG1GC -XX:MaxRAMPercentage=70.0"
+      JAVA_HOME: "/usr/lib/jvm/java-17-openjdk-amd64"
+      
+      # Variables de conexión a Postgres
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_SCHEMA_RAW: ${PG_SCHEMA_RAW}
+      PG_SCHEMA_ANALYTICS: ${PG_SCHEMA_ANALYTICS}
+      
+      # Variables de ingesta
+      SOURCE_BASE: ${SOURCE_BASE}
+      TAXI_ZONE_URL: ${TAXI_ZONE_URL}
+      START_YEAR: ${START_YEAR}
+      END_YEAR: ${END_YEAR}
+      SERVICES: ${SERVICES}
+      RUN_ID: ${RUN_ID}
+      BATCH_SIZE: ${BATCH_SIZE}
+    
+    command: start-notebook.py --NotebookApp.token=''
+    
+    env_file:
+      - .env
+    
+    depends_on:
+      - postgres
+    
+    restart: unless-stopped
+    
+    mem_limit: 6g
+    memswap_limit: 6g
+
+  obt-builder:
+    build:
+      context: ./obt-builder
+      dockerfile: Dockerfile
+    container_name: obt_builder
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PG_SCHEMA_RAW: ${PG_SCHEMA_RAW}
+      PG_SCHEMA_ANALYTICS: ${PG_SCHEMA_ANALYTICS}
+      RUN_ID: ${RUN_ID}
+      OBT_MODE: ${OBT_MODE}
+      OBT_YEAR_START: ${OBT_YEAR_START}
+      OBT_YEAR_END: ${OBT_YEAR_END}
+      OBT_OVERWRITE: ${OBT_OVERWRITE}
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    restart: "no"
+
+networks:
+  default:
+    name: proyecto04_network
