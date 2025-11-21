@@ -245,15 +245,9 @@ docker compose run --rm obt-builder --overwrite
 
 ## Validación de Datos
 
-Usar pgAdmin en `http://localhost:8080` para explorar:
-
-**Esquema RAW**:
-- `raw.yellow_taxi_trip`
-- `raw.green_taxi_trip`
-- `raw.taxi_zone_lookup`
-
-**Esquema ANALYTICS**:
-- `analytics.obt_trips`
+- Usar pgAdmin en `http://localhost:8080` para explorar las tablas visualmente creadas en RAW y ANALYTICS.
+- Se dispone de un archivo PDF que contiene capturas de pantalla como evidencia del proceso, recopiladas durante el desarrollo del proyecto.
+- Se disponen de archivos, en la carpeta `evidencias`, que tienen información del trabajo realizado.
 
 ---
 
